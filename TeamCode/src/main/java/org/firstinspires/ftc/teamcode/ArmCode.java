@@ -2,11 +2,10 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp(name="Claw Code")
-public class ClawCode extends LinearOpMode {
+@TeleOp(name="Arm Code")
+public class ArmCode extends LinearOpMode {
     DcMotor geoffry;
     @Override
     public void runOpMode() throws InterruptedException {
@@ -14,10 +13,10 @@ public class ClawCode extends LinearOpMode {
         waitForStart();
         while (opModeIsActive()) {
             if (gamepad1.left_bumper){
-                geoffry.setPower(0.4);
+                geoffry.setPower(0.1);
             }
             else if (gamepad1.right_bumper){
-                geoffry.setPower(-0.4);
+                geoffry.setPower(-0.1);
 
             }
             else{
