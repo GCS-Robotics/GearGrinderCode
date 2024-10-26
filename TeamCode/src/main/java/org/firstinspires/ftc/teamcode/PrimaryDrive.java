@@ -7,11 +7,11 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp(name = "Primary Drive Mode")
 public class PrimaryDrive extends LinearOpMode {
     // Define Motors Here
-    DcMotor leftFront; //port 0 Gobuilda 5202/3/4
-    DcMotor leftRear; //port 1 Gobuilda 5202/3/4
-    DcMotor rightFront; //port 2 Gobuilda 5202/3/4
-    DcMotor rightRear; //port 3 Gobuilda 5202/3/4
-    DcMotor linearSlide; //expansionHub port 0 Gobuilda 5202/3/4
+    DcMotor leftFront; //port 0 Gobilda 5202/3/4
+    DcMotor leftRear; //port 1 Gobilda 5202/3/4
+    DcMotor rightFront; //port 2 Gobilda 5202/3/4
+    DcMotor rightRear; //port 3 Gobilda 5202/3/4
+    DcMotor linearSlide; //expansionHub port 0 Gobilda 5202/3/4
     @Override
     public void runOpMode() throws InterruptedException {
         // On Init (Hardwaremap Motors Here)
