@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
@@ -14,7 +15,10 @@ public class PrimaryDrive extends LinearOpMode {
     DcMotor rightFront; //port 2 Gobilda 5202/3/4
     DcMotor rightRear; //port 3 Gobilda 5202/3/4
     DcMotor linearSlide; //expansionHub port 0 Gobilda 5202/3/4
-    boolean driving;
+    // Allowed to go from 0 to -4500
+    DcMotor spinnerPivot;
+    CRServo spinner;
+
     @Override
     public void runOpMode() throws InterruptedException {
         // On Init (Hardwaremap Motors Here)
@@ -23,17 +27,42 @@ public class PrimaryDrive extends LinearOpMode {
         rightFront=hardwareMap.dcMotor.get("motor3");
         rightRear=hardwareMap.dcMotor.get("motor4");
         linearSlide=hardwareMap.dcMotor.get("motor5");
+        spinnerPivot=hardwareMap.dcMotor.get("motor6");
+        spinner=hardwareMap.crservo.get("servo2");
+
+        // Reset Encoder
+        linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linearSlide.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         waitForStart();
         // Making the Drive Class
-        MecanumDrive drive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear, .4, false, false, true, true);
+        MecanumDrive drive = new MecanumDrive(leftFront, leftRear, rightFront, rightRear, .7, false, false, true, true);
         // On Play
         while(opModeIsActive()) {
             /// LINEAR SLIDE
-            if (gamepad2.left_stick_y>.5) {
-                linearSlide.setPower(.4);
+            if (gamepad2.left_stick_y<-.4 && linearSlide.getCurrentPosition()>-4500) {
+                linearSlide.setPower(.3);
             }
-            else {
+            else if(gamepad2.left_stick_y>.4&&linearSlide.getCurrentPosition()<-600){
+                linearSlide.setPower(-.3);
+            } else {
                 linearSlide.setPower(0);
+            }
+            telemetry.addData("Current Pos", linearSlide.getCurrentPosition());
+            // SPINNER
+            if(gamepad2.right_stick_y<-.4) {
+                spinnerPivot.setPower(.5);
+            } else if(gamepad2.right_stick_y>.4) {
+                spinnerPivot.setPower(-.5);
+            } else {
+                spinnerPivot.setPower(0);
+            }
+
+            if(gamepad2.right_bumper) {
+                spinner.setPower(.7);
+            } else if(gamepad2.left_bumper) {
+                spinner.setPower(-.7);
+            } else {
+                spinner.setPower(0);
             }
             // DRIVING
             telemetry.addData("Left Stick X: ", gamepad1.left_stick_x);
@@ -41,10 +70,17 @@ public class PrimaryDrive extends LinearOpMode {
             telemetry.addData("Right Stick X: ", gamepad1.right_stick_x);
             telemetry.addData("Right Stick Y: ", gamepad1.right_stick_y);
             telemetry.update();
-            if(Math.abs(gamepad1.left_stick_x)>.4 || Math.abs(gamepad1.left_stick_y)>.4) { // If the left stick is being moved sufficiently
+            if (Math.abs(gamepad1.right_stick_x) >.4) { // If the right stick is being moved sufficiently
+                // Tank Turn
+                if(gamepad1.right_stick_x>.4) {
+                    drive.turnRightTank(1);
+                }
+                if(gamepad1.right_stick_x<-.4) {
+                    drive.turnLeftTank(1);
+                }
+            } else if(Math.abs(gamepad1.left_stick_x)>.4 || Math.abs(gamepad1.left_stick_y)>.4) { // If the left stick is being moved sufficiently
                 // Forward/Back
                 if (gamepad1.left_stick_y < -.4 && Math.abs(gamepad1.left_stick_x) < .4) {
-                    // Absolute value of the left stick's position, plus .3 || Minimum speed is .4, max is .55
                     drive.moveForward(1);
                 }
                 if (gamepad1.left_stick_y > .4 && Math.abs(gamepad1.left_stick_x) < .4) {
@@ -59,7 +95,6 @@ public class PrimaryDrive extends LinearOpMode {
                 }
                 // Diagonals
                 if (gamepad1.left_stick_y < -.4 && gamepad1.left_stick_x > .4) {
-                    // Average of the two left stick's positions, plus .3 || Minimum speed is .4, max is .55
                     drive.diagonalRightFront(1);
                 }
                 if (gamepad1.left_stick_y < -.4 && gamepad1.left_stick_x < -.4) {
@@ -70,14 +105,6 @@ public class PrimaryDrive extends LinearOpMode {
                 }
                 if (gamepad1.left_stick_y > .4 && gamepad1.left_stick_x < -.4) {
                     drive.diagonalLeftBack(1);
-                }
-            } else if (Math.abs(gamepad1.right_stick_x) >.4) { // If the right stick is being moved sufficiently
-                // Tank Turn
-                if(gamepad1.right_stick_x>.4) {
-                    drive.turnRightTank(1);
-                }
-                if(gamepad1.right_stick_x<-.4) {
-                    drive.turnLeftTank(1);
                 }
             } else { // If the sticks aren't being touched
                 drive.stop();
