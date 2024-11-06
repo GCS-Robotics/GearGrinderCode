@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
@@ -18,6 +19,7 @@ public class PrimaryDrive extends LinearOpMode {
     // Allowed to go from 0 to -4500
     DcMotor spinnerPivot;
     CRServo spinner;
+    Servo tilt;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -29,6 +31,7 @@ public class PrimaryDrive extends LinearOpMode {
         linearSlide=hardwareMap.dcMotor.get("motor5");
         spinnerPivot=hardwareMap.dcMotor.get("motor6");
         spinner=hardwareMap.crservo.get("servo2");
+        tilt=hardwareMap.servo.get("servoE6");
 
         // Reset Encoder
         linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -48,21 +51,27 @@ public class PrimaryDrive extends LinearOpMode {
                 linearSlide.setPower(0);
             }
             telemetry.addData("Current Pos", linearSlide.getCurrentPosition());
-            // SPINNER
-            if(gamepad2.right_stick_y<-.4) {
+            // SPINNER PIVOT
+            if(gamepad2.right_stick_y>.4) {
                 spinnerPivot.setPower(.5);
-            } else if(gamepad2.right_stick_y>.4) {
+            } else if(gamepad2.right_stick_y<-.4) {
                 spinnerPivot.setPower(-.5);
             } else {
                 spinnerPivot.setPower(0);
             }
-
+            // SPINNER
             if(gamepad2.right_bumper) {
                 spinner.setPower(.7);
             } else if(gamepad2.left_bumper) {
                 spinner.setPower(-.7);
             } else {
                 spinner.setPower(0);
+            }
+            // TILT
+            if(gamepad2.a) {
+                tilt.setPosition(0);
+            } if(gamepad2.b) {
+                tilt.setPosition(1);
             }
             // DRIVING
             telemetry.addData("Left Stick X: ", gamepad1.left_stick_x);

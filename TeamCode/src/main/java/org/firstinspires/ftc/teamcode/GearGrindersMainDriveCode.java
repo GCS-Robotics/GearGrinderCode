@@ -51,51 +51,51 @@ public class GearGrindersMainDriveCode extends LinearOpMode{
                 arm.setPower(0);
             }
 
-
+            //Forwards
             if (gamepad1.left_stick_y < -.50) {
-                leftFront.setPower(0.75);
-                leftRear.setPower(-0.75);
-                rightFront.setPower(-0.75);
-                rightRear.setPower(0.75);
+                leftFront.setPower(-1);
+                leftRear.setPower(-1);
+                rightFront.setPower(1);
+                rightRear.setPower(1);
             }
 
             //Backwards
             else if (gamepad1.left_stick_y > .50) {
-                leftFront.setPower(-0.75);
-                leftRear.setPower(0.75);
-                rightFront.setPower(0.75);
-                rightRear.setPower(-0.75);
+                leftFront.setPower(1);
+                leftRear.setPower(1);
+                rightFront.setPower(-1);
+                rightRear.setPower(-1);
             }
             //Left
             else if(gamepad1.left_stick_x<-.50){
-                leftFront.setPower(0.75);
-                leftRear.setPower(0.75);
-                rightFront.setPower(-0.75);
-                rightRear.setPower(-0.75);
+                leftFront.setPower(1);
+                leftRear.setPower(-1);
+                rightFront.setPower(1);
+                rightRear.setPower(-1);
             }
 
             //Right
             else if(gamepad1.left_stick_x>.50){
-                leftFront.setPower(-0.75);
-                leftRear.setPower(-0.75);
-                rightFront.setPower(0.75);
-                rightRear.setPower(0.75);
+                leftFront.setPower(-1);
+                leftRear.setPower(1);
+                rightFront.setPower(-1);
+                rightRear.setPower(1);
             }
 
             //RightForwardDiagonal
             else if(gamepad1.right_stick_y<-.50){
-                leftFront.setPower(0.75);
+                leftFront.setPower(-1);
                 leftRear.setPower(0);
                 rightFront.setPower(0);
-                rightRear.setPower(0.75);
+                rightRear.setPower(-1);
             }
 
             //LeftForwardDiagonal
             else if(gamepad1.right_stick_x<-.50){
-                leftFront.setPower(0);
-                leftRear.setPower(-0.75);
-                rightFront.setPower(-0.75);
-                rightRear.setPower(0);
+                leftFront.setPower(-1);
+                leftRear.setPower(0);
+                rightFront.setPower(0);
+                rightRear.setPower(-1);
             }
 
             //RightRearDiagonal
