@@ -25,26 +25,24 @@ public class GearGrindersMainDriveCode extends LinearOpMode{
         rightFront = hardwareMap.dcMotor.get("motor3");
         rightRear = hardwareMap.dcMotor.get("motor4");
         arm = hardwareMap.dcMotor.get("motor5");
+        //TODO: Implement MecanumDrive class
+        //MecanumDrive drive = new MecanumDrive(leftFront, rightFront, leftRear, rightRear, .4, true, true, true, true);
         waitForStart();
         // On Play
         while (opModeIsActive()) {
             if(gamepad2.left_stick_y<-.50){
-
                 claw.setPower(100);
             }
             else if(gamepad2.left_stick_y>.50){
-
                 claw.setPower(-100);
             }
             else {
                 claw.setPower(0);
             }
             if(gamepad2.right_stick_y<-.50){
-
                 arm.setPower(.5);
             }
             else if(gamepad2.right_stick_y>.50){
-
                 arm.setPower(-.5);
             }
             else {
