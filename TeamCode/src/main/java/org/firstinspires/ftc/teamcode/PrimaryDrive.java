@@ -31,7 +31,7 @@ public class PrimaryDrive extends LinearOpMode {
         linearSlide=hardwareMap.dcMotor.get("motor5");
         spinnerPivot=hardwareMap.dcMotor.get("motor6");
         spinner=hardwareMap.crservo.get("servo2");
-        tilt=hardwareMap.servo.get("servoE6");
+        tilt=hardwareMap.servo.get("servoE5");
 
         // Reset Encoder
         linearSlide.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -42,7 +42,7 @@ public class PrimaryDrive extends LinearOpMode {
         // On Play
         while(opModeIsActive()) {
             /// LINEAR SLIDE
-            if (gamepad2.left_stick_y<-.4 && linearSlide.getCurrentPosition()>-4500) {
+            if (gamepad2.left_stick_y<-.4 && linearSlide.getCurrentPosition()>-10000) {
                 linearSlide.setPower(.3);
             }
             else if(gamepad2.left_stick_y>.4&&linearSlide.getCurrentPosition()<-600){
@@ -69,16 +69,14 @@ public class PrimaryDrive extends LinearOpMode {
             }
             // TILT
             if(gamepad2.a) {
-                tilt.setPosition(0);
+                tilt.setPosition(tilt.getPosition()-.01);
             } if(gamepad2.b) {
-                tilt.setPosition(1);
+                tilt.setPosition(tilt.getPosition()+.01);
             }
-            // DRIVING
-            telemetry.addData("Left Stick X: ", gamepad1.left_stick_x);
-            telemetry.addData("Left Stick Y: ", gamepad1.left_stick_y);
-            telemetry.addData("Right Stick X: ", gamepad1.right_stick_x);
-            telemetry.addData("Right Stick Y: ", gamepad1.right_stick_y);
+            // TELEMETRY
+            telemetry.addData("Basket Position: ", tilt.getPosition());
             telemetry.update();
+            // DRIVING
             if (Math.abs(gamepad1.right_stick_x) >.4) { // If the right stick is being moved sufficiently
                 // Tank Turn
                 if(gamepad1.right_stick_x>.4) {
